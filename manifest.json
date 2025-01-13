@@ -1,15 +1,14 @@
 {
     "manifest_version": 3,
-    "name":"Summarize-me",
-    "version": "1.0.0",
-    "description":"A smart Chrome Extension that summarizes web page content, translates it into multiple languages, and reads it aloud for an accessible and seamless browsing experience.",
-    "action":{
-        "default_popup":"index.html",
-        "default_icon":{
-            "128":"assets/logo.png"
-        }
+    "name": "Example Extension",
+    "description": "Runs a script on www.example.com automatically when user installs the extension",
+    "version": "1.0",
+    "action": {
+      "default_popup": "index.html"
     },
-    "icons":{
-        "128":"assets/logo.png"
-    }
-}
+    "permissions":["activeTab"],
+    "content_scripts":[{
+      "matches":["<all_urls>"],
+      "js":["src/content.js"]
+    }]
+  }
