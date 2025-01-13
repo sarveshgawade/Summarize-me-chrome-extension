@@ -1,27 +1,31 @@
-import { useEffect, useState } from 'react'  
+import { useEffect, useState } from 'react'
 import './App.css'
-import axios from 'axios'
+
 
 function App() {
-  const API_URL = 'https://icanhazdadjoke.com/slack'
-
-  const [joke,setJoke] = useState('')
-
-  const loadJokes = async () => {
-      const response = await axios.get(API_URL)  
-      const extractedJoke = response.data.attachments[0].fallback
-      setJoke(extractedJoke)
-  }
-
-  useEffect(()=>{
-    loadJokes()
-  },[])
+  const [data,setData] = useState('')
+ 
+ useEffect(()=>{
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: "get_page_data" }, (response) => {
+      if (response && response.data) {
+        setData(response.data);
+      }
+    });
+    
+  });
+  
+ })
 
   return (
-    <div className='flex items-center justify-center text-center bg-gray-100 border border-gray-300 rounded-lg w-[300px] h-[150px] text-lg'>
-      {joke}
-      
-    </div>
+    <div>
+    <h1>Webpage Data</h1>
+    <textarea
+      value={data }
+      readOnly
+      style={{ width: "100%", height: "300px" }}
+    />
+  </div>
   )
 }
 
